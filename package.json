@@ -1,0 +1,25 @@
+{
+    "name": "yelp-clone",
+    "version": "1.0.0",
+    "description": "<h2>Yelp Clone Project</h2>\r <h4 >Some Technologies Used</h4>\r <ul >\r   <li>GraphQL</li>\r   <li>Redis</li>\r   <li>Sequelize</li>\r </ul>",
+    "main": ".eslintrc.js",
+    "scripts": {
+        "start": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
+        "dev": "concurrently \"cd client && npm start\" \"cd server && npm run dev\"",
+        "test": "cd server && npm test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sametpalitci/yelp-clone.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/sametpalitci/yelp-clone/issues"
+    },
+    "homepage": "https://github.com/sametpalitci/yelp-clone#readme",
+    "dependencies": {
+        "concurrently": "^6.0.2"
+    }
+}
