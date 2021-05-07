@@ -23,18 +23,19 @@ const add = async(args, context) => {
 };
 
 const get = async(args) => {
-    try {
-        const { restaurantId } = args;
-        const fetchCommentsByRestaurant = await db.Comment.findAll({
-            where: [{
-                restaurantId
-            }],
-            raw: true
-        });
-        return fetchCommentsByRestaurant;
-    } catch (error) {
-        return new Error(error)
-    }
+    if (client.get("user_name"))
+        try {
+            const { restaurantId } = args;
+            const fetchCommentsByRestaurant = await db.Comment.findAll({
+                where: [{
+                    restaurantId
+                }],
+                raw: true
+            });
+            return fetchCommentsByRestaurant;
+        } catch (error) {
+            return new Error(error)
+        }
 };
 
 module.exports = { add, get }

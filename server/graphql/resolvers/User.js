@@ -9,7 +9,7 @@ const login = async(args) => {
     if (!checkFields(username, password)) {
         return new Error("The fields can't be empty");
     }
-    const checkUser = await db.User.findOne({ where: [{ username }], raw: true });
+    const checkUser = await db.User.cache().findOne({ where: [{ username }], raw: true });
     if (!checkUser) {
         return new Error("username or password is not correct");
     }
