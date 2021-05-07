@@ -10,10 +10,6 @@ const GraphQLRootSchema = require('./graphql');
 app.use(express.json());
 app.use(morgan('dev'));
 
-const createContext = (req) => ({
-    headers: req.headers,
-})
-
 app.use('/graphql', graphqlHTTP((request, response, graphQlParams) => ({
     schema: GraphQLRootSchema,
     graphiql: true,

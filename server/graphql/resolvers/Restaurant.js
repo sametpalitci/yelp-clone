@@ -1,6 +1,10 @@
 const checkFields = require('../../utils/checkFields')
 const db = require('../../models');
 const { verify } = require('jsonwebtoken');
+const util = require('util');
+const redis = require('redis');
+const client = redis.createClient();
+client.get = util.promisify(client.get);
 
 const add = async(args, context) => {
     const { name, location, price } = args;
@@ -16,6 +20,7 @@ const add = async(args, context) => {
             userId: userInfo.id
         }
         await db.Restaurant.create(potantialRestaurant);
+        await client.del("allRestaurant");
         return potantialRestaurant;
     } catch (error) {
         return new Error(error)
@@ -23,11 +28,17 @@ const add = async(args, context) => {
 };
 
 const get = async(args) => {
-    try {
-        const findFilterRestaurant = await db.Restaurant.findAll({ raw: true });
-        return findFilterRestaurant;
-    } catch (error) {
-        return new Error(error);
+    const cachedBlogs = await client.get('allRestaurant');
+    if (cachedBlogs) {
+        return JSON.parse(cachedBlogs)
+    } else {
+        try {
+            const findFilterRestaurant = await db.Restaurant.findAll({ raw: true });
+            await client.set('allRestaurant', JSON.stringify(findFilterRestaurant));
+            return findFilterRestaurant;
+        } catch (error) {
+            return new Error(error);
+        }
     }
 }
 
