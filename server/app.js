@@ -10,10 +10,18 @@ const GraphQLRootSchema = require('./graphql');
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.use(graphqlHTTP({
+const createContext = (req) => ({
+    headers: req.headers,
+})
+
+app.use('/graphql', graphqlHTTP((request, response, graphQlParams) => ({
     schema: GraphQLRootSchema,
-    graphiql: true
-}));
+    graphiql: true,
+    context: {
+        request,
+        test: 'Example context value'
+    }
+})));
 
 db.sequelize.sync().then(() => {
     app.listen(process.env.SERVER_PORT, () => {
