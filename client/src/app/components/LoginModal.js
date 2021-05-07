@@ -3,26 +3,28 @@ import {Modal,Button} from 'react-bootstrap';
 import swal from 'sweetalert';
 import { checkFields, fetchData } from '../utils';
 
-const LoginModal = ({show,hide}) => {
+const LoginModal = ({show,hide,setNewToken}) => {
     const [getUsername,setUsername] = useState("");
     const [getPassword,setPassword] = useState("");
 
     const userLogin = async (e) => {
         e.preventDefault();
-        console.log(getUsername,getPassword)
         if(checkFields(getUsername,getPassword)){
             const loginPassToAPI = await fetchData('/graphql','POST',{
                 query:`mutation {
                     login(username: "${getUsername}", password: "${getPassword}"){
                       username,
                       id
+                      token
                     }
                   }`
             })
             if(loginPassToAPI.errors){
                 swal(loginPassToAPI.errors[0].message);
             } else {
+                sessionStorage.setItem('token',loginPassToAPI.data.login.token)
                 swal('Successfull!');
+                setNewToken();
                 setUsername("");
                 setPassword("");
                 hide();

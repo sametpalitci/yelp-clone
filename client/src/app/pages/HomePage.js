@@ -7,10 +7,13 @@ import {
 import DataTable from 'react-data-table-component';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import { RestaurantModal } from '../components/RestaurantModal';
 
 
 const HomePage = () => {
     const [getRestaurantData,setRestaurantData] = useState([]);
+    const [getSessionToken,setSessionToken] = useState(sessionStorage.getItem('token'));
+    const [restaurantModalShow,setRestauranModalShow] = useState(false);
     const _fetchRestaurants = async ()=>{
         const _fetchData = await fetchData('/graphql','POST',{
             query:`
@@ -66,8 +69,12 @@ const HomePage = () => {
       ];
     return (
         <>
-        <Header />
+        <Header newToken={()=>setSessionToken(sessionStorage.getItem('token'))}/>
             <div className="container">
+            <RestaurantModal show={restaurantModalShow} hide={()=>setRestauranModalShow(false)} setNewRestaurant={()=>_fetchRestaurants()}/>
+              {getSessionToken && 
+                <button className="btn btn-warning my-3" onClick={()=>setRestauranModalShow(!restaurantModalShow)}>Add Restaurant</button>
+              }
             <DataTable
                 className="mt-5"
                 title="Restaurants"
