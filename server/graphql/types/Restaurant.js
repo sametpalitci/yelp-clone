@@ -15,6 +15,9 @@ const RestaurantType = new GraphQLObjectType({
         },
         userId: {
             type: GraphQLID
+        },
+        id: {
+            type: GraphQLID
         }
     }
 });
