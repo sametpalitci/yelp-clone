@@ -12,7 +12,7 @@ app.use(morgan('dev'));
 
 app.use('/graphql', graphqlHTTP((request, response, graphQlParams) => ({
     schema: GraphQLRootSchema,
-    graphiql: true,
+    graphiql: process.env.NODE_ENV === 'development',
     context: {
         request,
         test: 'Example context value'
@@ -24,3 +24,5 @@ db.sequelize.sync().then(() => {
         console.log(`App is listening ${process.env.SERVER_PORT} Port`);
     })
 })
+
+module.exports = app;
