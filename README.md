@@ -6,7 +6,12 @@
   <li>Redis</li>
   <li>Sequelize</li>
 </ul>
+First Of All
 
+`cd client && npm i && cd .. && cd server && npm i`
+
+Then
+`npm start` or `npm run dev`
 ### Code Schema
 <p align="center" width="100%">
 
